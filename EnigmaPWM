@@ -367,9 +367,6 @@ while True:
                                     sg.popup(f"     No password found for {website}.     ")
                                 get_password_win.close()
 
-
-
-
                     elif event == "3. Change Saved Password":
                         # Change Saved Password functionality
                         change_password_win = change_password_window()
@@ -402,9 +399,6 @@ while True:
                             elif event == sg.WIN_CLOSED:
                                 change_password_win.close()
                                 break
-
-
-
 
                     elif event == "4. View Saved Websites":
                         # View Saved Websites functionality
