@@ -415,6 +415,6 @@ while True:
                         welcome_window.close()
                         home_window.close()
                         sys.exit()
-                    # Handle other events in the welcome window as needed
+                    
 
 home_window.close()
