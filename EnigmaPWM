@@ -33,7 +33,7 @@ def decrypt_password(cipher, encrypted_password):
 
 
 # Function to register a user if no Master User exists yet.
-# Only one user can exist. Move or Delete user_data.JSON from script file for testing/security/new accounts
+# Only one user can exist. 
 def register(username, master_password):
     # Encrypt the master password before storing it
     hashed_master_password = hash_password(master_password)
@@ -74,16 +74,14 @@ def login(username, entered_password):
                         return False  # User canceled or closed the popup, return False
                     continue
                 else:
-                    break  # Break the loop if max attempts reached
+                    break  
         except Exception as e:
             sg.popup("     [-] An error occurred during login:     ", str(e))
             attempt_count += 1  # Increment attempt count
-
+    # Break the loop if max attempts reached
     if attempt_count >= max_attempts:
         sg.popup(     "[-] Maximum login attempts reached."     )
     return False
-
-
 
 
 # Function to view saved websites.
@@ -310,9 +308,9 @@ while True:
                 home_window.un_hide()
                 break
 
-
     elif event == "Log-In":
-        # opens login window
+        # Opens login window, and check credentials.
+        # If credentials are valid, opens the welcome window
         while True:
             login_window = create_login_window()
             event, values = login_window.read()
@@ -323,17 +321,18 @@ while True:
                 username = values['-USERNAME-']
                 entered_password = values['-PASSWORD-']
                 home_window.close()
-
                 if login(username, entered_password):
                     login_window.close()
                     welcome_window = create_welcome_window()
-
-                #***Display the welcome window***#
+               
+                ## Welcome/main window open ##
                 while True:
                     event, values = welcome_window.read()
                     if event == sg.WIN_CLOSED:
                         sys.close()
                         break
+                   
+                    # If user clicks add password  button, opens window to save a website/password
                     elif event == "1. Add Password":
                         add_password_win = add_password_window()
                         while True:
@@ -341,6 +340,7 @@ while True:
                             if event == sg.WIN_CLOSED:
                                 add_password_win.close()
                                 break
+                        # Saves new password, then returns the user to the welcome window
                             if event == "Save":
                                 website_username = values['-WEBSITE_USERNAME-']
                                 new_password = values['-NEW_PASSWORD-']
@@ -349,13 +349,15 @@ while True:
                                 add_password_win.close()
                                 welcome_window.UnHide()
                                 break
-
+                    
                     elif event == "2. Get Password":
                         get_password_win = get_password_window()
                         while True:
                             event, values = get_password_win.read()
                             if event == sg.WIN_CLOSED:
                                 break
+                            # Searches for the website entered by user.
+                            # If a password exists for that website, display it, and copy it to clipboard
                             if event == "Get Password":
                                 website = values['-WEBSITE-']
                                 password = get_password(website)
@@ -366,9 +368,8 @@ while True:
                                 else:
                                     sg.popup(f"     No password found for {website}.     ")
                                 get_password_win.close()
-
+                                        
                     elif event == "3. Change Saved Password":
-                        # Change Saved Password functionality
                         change_password_win = change_password_window()
                         while True:
                             event, values = change_password_win.read()
@@ -389,17 +390,17 @@ while True:
                                             sg.popup(f"     Password for {website} updated!     ")
                                             new_password_win.close()
                                             change_password_win.close() # Close the new password window after saving the password
-                                            break  # Break out of the inner while loop after saving the password
+                                            break  
                                         elif event == sg.WIN_CLOSED:
                                             new_password_win.close()
-                                            break  # Close the new password window if closed
+                                            break  
                                     break  # Break out of the outer while loop after saving the password
                                 else:
                                     sg.popup(f"    No password found for {website}.    ")
                             elif event == sg.WIN_CLOSED:
                                 change_password_win.close()
                                 break
-
+                    
                     elif event == "4. View Saved Websites":
                         # View Saved Websites functionality
                         view_websites_win = view_websites_window()
@@ -410,7 +411,6 @@ while True:
                             if event == "Close":
                                 view_websites_win.close()
                                 break
-
                     elif event == sg.WIN_CLOSED or event == "5. Exit":
                         welcome_window.close()
                         home_window.close()
